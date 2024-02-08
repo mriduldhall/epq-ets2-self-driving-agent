@@ -1,80 +1,80 @@
-person
-bicycle
+dont_show person
+dont_show bicycle
 car
-motorbike
-aeroplane
+dont_show motorbike
+dont_show aeroplane
 bus
-train
+dont_show train
 truck
-boat
+dont_show boat
 traffic light
-fire hydrant
-stop sign
-parking meter
-bench
-bird
-cat
-dog
-horse
-sheep
-cow
-elephant
-bear
-zebra
-giraffe
-backpack
-umbrella
-handbag
-tie
-suitcase
-frisbee
-skis
-snowboard
-sports ball
-kite
-baseball bat
-baseball glove
-skateboard
-surfboard
-tennis racket
-bottle
-wine glass
-cup
-fork
-knife
-spoon
-bowl
-banana
-apple
-sandwich
-orange
-broccoli
-carrot
-hot dog
-pizza
-donut
-cake
-chair
-sofa
-pottedplant
-bed
-diningtable
-toilet
-tvmonitor
-laptop
-mouse
-remote
-keyboard
-cell phone
-microwave
-oven
-toaster
-sink
-refrigerator
-book
-clock
-vase
-scissors
-teddy bear
-hair drier
-toothbrush
+dont_show fire hydrant
+dont_show stop sign
+dont_show parking meter
+dont_show bench
+dont_show bird
+dont_show cat
+dont_show dog
+dont_show horse
+dont_show sheep
+dont_show cow
+dont_show elephant
+dont_show bear
+dont_show zebra
+dont_show giraffe
+dont_show backpack
+dont_show umbrella
+dont_show handbag
+dont_show tie
+dont_show suitcase
+dont_show frisbee
+dont_show skis
+dont_show snowboard
+dont_show sports ball
+dont_show kite
+dont_show baseball bat
+dont_show baseball glove
+dont_show skateboard
+dont_show surfboard
+dont_show tennis racket
+dont_show bottle
+dont_show wine glass
+dont_show cup
+dont_show fork
+dont_show knife
+dont_show spoon
+dont_show bowl
+dont_show banana
+dont_show apple
+dont_show sandwich
+dont_show orange
+dont_show broccoli
+dont_show carrot
+dont_show hot dog
+dont_show pizza
+dont_show donut
+dont_show cake
+dont_show chair
+dont_show sofa
+dont_show pottedplant
+dont_show bed
+dont_show diningtable
+dont_show toilet
+dont_show tvmonitor
+dont_show laptop
+dont_show mouse
+dont_show remote
+dont_show keyboard
+dont_show cell phone
+dont_show microwave
+dont_show oven
+dont_show toaster
+dont_show sink
+dont_show refrigerator
+dont_show book
+dont_show clock
+dont_show vase
+dont_show scissors
+dont_show teddy bear
+dont_show hair drier
+dont_show toothbrush

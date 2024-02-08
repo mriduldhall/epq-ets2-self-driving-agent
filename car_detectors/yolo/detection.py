@@ -56,12 +56,14 @@ while True:
     idxs = cv2.dnn.NMSBoxes(boxes, confidences, detection_probability_threshold, non_maxima_suppression_threshold)
     if len(idxs) > 0:
         for i in idxs.flatten():
-            (x, y) = (boxes[i][0], boxes[i][1])
-            (w, h) = (boxes[i][2], boxes[i][3])
             color = [int(c) for c in COLORS[class_ids[i]]]
-            cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-            text = "{}: {:.4f}".format(LABELS[class_ids[i]], confidences[i])
-            cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+            label = LABELS[class_ids[i]]
+            if "dont_show" not in label:
+                (x, y) = (boxes[i][0], boxes[i][1])
+                (w, h) = (boxes[i][2], boxes[i][3])
+                cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
+                text = "{}: {:.4f}".format(label, confidences[i])
+                cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
     if writer is None:
         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
