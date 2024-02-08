@@ -12,10 +12,10 @@ yolo_config = getenv("YOLO_CONFIG")
 detection_probability_threshold = float(getenv("DETECTION_THRESHOLD"))
 non_maxima_suppression_threshold = float(getenv("NON_MAXIMA_SUPPRESSION_THRESHOLD"))
 
-LABELS = open(getenv("LABELS_PATH")).read().strip().split("\n")
+labels = open(getenv("LABELS_PATH")).read().strip().split("\n")
 
 np.random.seed(42)
-COLORS = np.random.randint(0, 255, size=(len(LABELS), 3), dtype="uint8")
+colour = (0, 255, 0)
 
 net = cv2.dnn.readNetFromDarknet(yolo_config, yolo_weights)
 ln = net.getLayerNames()
@@ -56,14 +56,13 @@ while True:
     idxs = cv2.dnn.NMSBoxes(boxes, confidences, detection_probability_threshold, non_maxima_suppression_threshold)
     if len(idxs) > 0:
         for i in idxs.flatten():
-            color = [int(c) for c in COLORS[class_ids[i]]]
-            label = LABELS[class_ids[i]]
+            label = labels[class_ids[i]]
             if "dont_show" not in label:
                 (x, y) = (boxes[i][0], boxes[i][1])
                 (w, h) = (boxes[i][2], boxes[i][3])
-                cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), colour, 2)
                 text = "{}: {:.4f}".format(label, confidences[i])
-                cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, colour, 2)
 
     if writer is None:
         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
