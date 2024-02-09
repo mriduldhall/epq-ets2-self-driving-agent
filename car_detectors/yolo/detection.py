@@ -6,7 +6,6 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(".env"))
 
 input_video = getenv("INPUT_VIDEO_PATH")
-output_video = getenv("OUTPUT_VIDEO_PATH")
 yolo_weights = getenv("YOLO_WEIGHTS")
 yolo_config = getenv("YOLO_CONFIG")
 detection_probability_threshold = float(getenv("DETECTION_THRESHOLD"))
@@ -22,7 +21,6 @@ ln = net.getLayerNames()
 ln = [ln[i - 1] for i in net.getUnconnectedOutLayers()]
 
 video = cv2.VideoCapture(input_video)
-writer = None
 (W, H) = (None, None)
 
 while True:
@@ -61,11 +59,9 @@ while True:
                 (x, y) = (boxes[i][0], boxes[i][1])
                 (w, h) = (boxes[i][2], boxes[i][3])
                 cv2.rectangle(frame, (x, y), (x + w, y + h), colour, 2)
+    cv2.imshow('video', frame)
+    if cv2.waitKey(25) & 0xFF == ord('q'):
+        break
 
-    if writer is None:
-        fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-        writer = cv2.VideoWriter(output_video, fourcc, 30, (frame.shape[1], frame.shape[0]), True)
-    writer.write(frame)
-
-writer.release()
 video.release()
+cv2.destroyAllWindows()
