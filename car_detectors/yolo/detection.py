@@ -61,8 +61,6 @@ while True:
                 (x, y) = (boxes[i][0], boxes[i][1])
                 (w, h) = (boxes[i][2], boxes[i][3])
                 cv2.rectangle(frame, (x, y), (x + w, y + h), colour, 2)
-                text = "{}: {:.4f}".format(label, confidences[i])
-                cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, colour, 2)
 
     if writer is None:
         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
