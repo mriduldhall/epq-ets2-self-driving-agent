@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from os import getenv
 from dotenv import load_dotenv, find_dotenv
+from distance_estimator.estimator import Estimator
 
 
 load_dotenv(find_dotenv(".env"))
@@ -19,6 +20,7 @@ class Detection:
     def __init__(self, detection_probability_threshold=0.3, non_maxima_suppression_threshold=0.3):
         self.detection_probability_threshold = detection_probability_threshold
         self.non_maxima_suppression_threshold = non_maxima_suppression_threshold
+        self.distance_estimator = Estimator()
 
     def detect(self, input_image):
         H, W = input_image.shape[:2]
@@ -49,4 +51,6 @@ class Detection:
                     (x, y) = (boxes[i][0], boxes[i][1])
                     (w, h) = (boxes[i][2], boxes[i][3])
                     cv2.rectangle(input_image, (x, y), (x + w, y + h), colour, 2)
+                    distance = self.distance_estimator.estimate_exponential_distance(x, w, (H - y) - h)
+                    cv2.putText(input_image, distance, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, colour, 2)
         return input_image
