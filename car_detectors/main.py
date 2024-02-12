@@ -4,13 +4,13 @@ from screenshot import Screenshot
 
 
 if __name__ == '__main__':
-    detection = Detection()
+    detector = Detection()
     screenshot = Screenshot()
     wait_time = 0
     while True:
         overall_start_time = time()
         start_time = time()
-        image = detection.detect(screenshot.take_screenshot())
+        image = detector.detect(screenshot.take_field_of_view_screenshot())
         end_time = time()
         wait_time = 1 - (end_time - start_time)
         if wait_time > 0:
