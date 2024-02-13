@@ -40,7 +40,15 @@ class Detector:
             return False
         return True
 
+    @staticmethod
+    def split_image(image):
+        width = image.shape[1]
+        first_digit = image[:, :width // 2]
+        second_digit = image[:, width // 2:]
+        return first_digit, second_digit
+
     def detect_speed_opencv(self, current_speed_image):
         # current_speed_image = self.screenshot.take_speed_screenshot()
         current_speed_image = self.pre_process_image(current_speed_image)
-        self.speed_in_double_digits(current_speed_image)
+        if self.speed_in_double_digits(current_speed_image):
+            first_digit, second_digit = self.split_image(current_speed_image)
