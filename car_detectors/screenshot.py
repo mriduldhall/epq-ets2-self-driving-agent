@@ -4,7 +4,7 @@ from pyautogui import screenshot
 
 
 class Screenshot:
-    def __init__(self, fov_x_start=500, fov_y_start=300, fov_x_length=400, fov_y_length=225, speed_limit_x_start=23, speed_limit_y_start=782, speed_limit_x_length=33, speed_limit_y_length=33, speed_x_start=693, speed_y_start=880, speed_x_length=18, speed_y_length=20):
+    def __init__(self, fov_x_start=500, fov_y_start=300, fov_x_length=400, fov_y_length=225, speed_limit_x_start=23, speed_limit_y_start=782, speed_limit_x_length=33, speed_limit_y_length=33, speed_x_start=697, speed_y_start=883, speed_x_length=14, speed_y_length=11):
         self.field_of_view_region = (fov_x_start, fov_y_start, fov_x_length, fov_y_length)
         self.speed_limit_region = (speed_limit_x_start, speed_limit_y_start, speed_limit_x_length, speed_limit_y_length)
         self.speed_region = (speed_x_start, speed_y_start, speed_x_length, speed_y_length)
