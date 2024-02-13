@@ -47,8 +47,21 @@ class Detector:
         second_digit = image[:, width // 2:]
         return first_digit, second_digit
 
-    def detect_speed_opencv(self, current_speed_image):
-        # current_speed_image = self.screenshot.take_speed_screenshot()
+    def detect_digit(self, image):
+        probabilities = []
+        for i in range(10):
+            template = cv2.imread('speed_templates/' + str(i) + '.png')
+            template = self.pre_process_image(template)
+            probability = max(max(cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)))
+            probabilities.append(probability)
+        return str(probabilities.index(max(probabilities)))
+
+    def detect_speed_opencv(self):
+        current_speed_image = self.screenshot.take_speed_screenshot()
         current_speed_image = self.pre_process_image(current_speed_image)
         if self.speed_in_double_digits(current_speed_image):
             first_digit, second_digit = self.split_image(current_speed_image)
+            first_digit = self.detect_digit(first_digit)
+            second_digit = self.detect_digit(second_digit)
+            return first_digit + second_digit
+        return self.detect_digit(current_speed_image)
