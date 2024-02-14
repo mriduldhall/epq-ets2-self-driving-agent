@@ -14,11 +14,11 @@ class Detector:
 
     def detect_speed_limit(self):
         image = self.screenshot.take_speed_limit_screenshot()
-        if self.check_exact_match(image, cv2.imread('speed_limits/60.png')):
+        if self.check_exact_match(image, cv2.imread('/Users/mriduldhall/PycharmProjects/epq-ets2-self-driving-agent/speed_detectors/speed_limits/60.png')):
             return 60
-        if self.check_exact_match(image, cv2.imread('speed_limits/50.png')):
+        if self.check_exact_match(image, cv2.imread('/Users/mriduldhall/PycharmProjects/epq-ets2-self-driving-agent/speed_detectors/speed_limits/50.png')):
             return 50
-        if self.check_exact_match(image, cv2.imread('speed_limits/30.png')):
+        if self.check_exact_match(image, cv2.imread('/Users/mriduldhall/PycharmProjects/epq-ets2-self-driving-agent/speed_detectors/speed_limits/30.png')):
             return 30
 
     def detect_speed_tesseract(self):
@@ -50,7 +50,7 @@ class Detector:
     def detect_digit(self, image):
         probabilities = []
         for i in range(10):
-            template = cv2.imread('speed_templates/' + str(i) + '.png')
+            template = cv2.imread('/Users/mriduldhall/PycharmProjects/epq-ets2-self-driving-agent/speed_detectors/speed_templates/' + str(i) + '.png')
             template = self.pre_process_image(template)
             probability = max(max(cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)))
             probabilities.append(probability)
