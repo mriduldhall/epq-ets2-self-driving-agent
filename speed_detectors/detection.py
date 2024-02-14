@@ -64,5 +64,5 @@ class Detector:
             first_digit, second_digit = self.split_image(current_speed_image)
             first_digit = self.detect_digit(first_digit)
             second_digit = self.detect_digit(second_digit)
-            return first_digit + second_digit
-        return self.detect_digit(current_speed_image)
+            return int(first_digit + second_digit)
+        return int(self.detect_digit(current_speed_image))
