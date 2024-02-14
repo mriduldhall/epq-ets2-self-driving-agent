@@ -7,10 +7,13 @@ class Controller:
         pass
 
     def control(self, command):
+        current_command = command.get_command()
         while True:
-            current_command = command.get_command()
             if current_command == "N":
                 sleep(0.2)
+                current_command = command.get_command()
             elif current_command == "A":
                 with hold("w"):
-                    sleep(0.2)
+                    while current_command == "A":
+                        sleep(0.2)
+                        current_command = command.get_command()
