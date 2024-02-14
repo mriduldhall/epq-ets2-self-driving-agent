@@ -20,6 +20,7 @@ class Detector:
             return 50
         if self.check_exact_match(image, cv2.imread('/Users/mriduldhall/PycharmProjects/epq-ets2-self-driving-agent/speed_detectors/speed_limits/30.png')):
             return 30
+        return 60
 
     def detect_speed_tesseract(self):
         img = self.screenshot.take_speed_screenshot()
