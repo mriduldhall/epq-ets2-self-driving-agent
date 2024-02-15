@@ -83,6 +83,23 @@ class Detector:
 
         return left_lane, right_lane
 
+    def detect_lanes_polyfit_previous_fit(self, image, previous_left_lane, previous_right_lane):
+        nonzero = image.nonzero()
+        nonzeroy = np.array(nonzero[0])
+        nonzerox = np.array(nonzero[1])
+        left_lane_inds = ((nonzerox > (previous_left_lane[0] * (nonzeroy ** 2) + previous_left_lane[1] * nonzeroy + previous_left_lane[2] - self.window_margin)) & (nonzerox < (previous_left_lane[0] * (nonzeroy ** 2) + previous_left_lane[1] * nonzeroy + previous_left_lane[2] + self.window_margin)))
+        right_lane_inds = ((nonzerox > (previous_right_lane[0] * (nonzeroy ** 2) + previous_right_lane[1] * nonzeroy + previous_right_lane[2] - self.window_margin)) & (nonzerox < (previous_right_lane[0] * (nonzeroy ** 2) + previous_right_lane[1] * nonzeroy + previous_right_lane[2] + self.window_margin)))
+        leftx = nonzerox[left_lane_inds]
+        lefty = nonzeroy[left_lane_inds]
+        rightx = nonzerox[right_lane_inds]
+        righty = nonzeroy[right_lane_inds]
+        left_lane, right_lane = (None, None)
+        if len(leftx) != 0:
+            left_lane = np.polyfit(lefty, leftx, 2)
+        if len(rightx) != 0:
+            right_lane = np.polyfit(righty, rightx, 2)
+        return left_lane, right_lane
+
     def draw_lane(self, image, thresholded, left_lane, right_lane, inverse_matrix):
         new_image = np.copy(image)
         if left_lane is None or right_lane is None:
@@ -105,10 +122,15 @@ class Detector:
         images = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
         # images = ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
         counter = 0
+        left_fit = None
+        right_fit = None
         for image in images:
             image = cv2.imread('../Test-Data/Lane Detection/field_of_view_' + image + '.png')
             thresholded, inverse_matrix = self.process_image(image)
-            left_fit, right_fit = self.detect_lanes_sliding_window(thresholded)
+            if left_fit is None or right_fit is None:
+                left_fit, right_fit = self.detect_lanes_sliding_window(thresholded)
+            else:
+                left_fit, right_fit = self.detect_lanes_polyfit_previous_fit(thresholded, left_fit, right_fit)
             detected = self.draw_lane(image, thresholded, left_fit, right_fit, inverse_matrix)
             if counter == 0:
                 numpy_horizontal_concat = detected
