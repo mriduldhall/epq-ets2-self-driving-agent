@@ -10,7 +10,8 @@ if __name__ == '__main__':
     while True:
         overall_start_time = time()
         start_time = time()
-        image = detector.detect(screenshot.take_field_of_view_screenshot())
+        image = screenshot.take_field_of_view_screenshot()
+        detections = detector.detect(image)
         end_time = time()
         wait_time = 1 - (end_time - start_time)
         if wait_time > 0:

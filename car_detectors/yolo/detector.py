@@ -43,13 +43,12 @@ class Detector:
                     confidences.append(float(confidence))
                     class_ids.append(class_id)
         idxs = cv2.dnn.NMSBoxes(boxes, confidences, self.detection_probability_threshold, self.non_maxima_suppression_threshold)
+        detections = []
         if len(idxs) > 0:
             for i in idxs.flatten():
                 label = labels[class_ids[i]]
                 if "dont_show" not in label:
-                    (x, y) = (boxes[i][0], boxes[i][1])
-                    (w, h) = (boxes[i][2], boxes[i][3])
-                    cv2.rectangle(input_image, (x, y), (x + w, y + h), self.colour, 2)
-                    distance = self.distance_estimator.estimate_exponential_distance(x, w, (input_height - y) - h)
-                    cv2.putText(input_image, distance, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.colour, 2)
-        return input_image
+                    dimensions = [boxes[i][0], boxes[i][1], boxes[i][2], boxes[i][3]]
+                    distance = self.distance_estimator.estimate_exponential_distance(dimensions[0], dimensions[2], (input_height - dimensions[1]) - dimensions[3])
+                    detections.append([dimensions, distance])
+        return detections
