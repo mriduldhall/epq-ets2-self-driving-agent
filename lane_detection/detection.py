@@ -101,6 +101,11 @@ class Detector:
         detected_lanes_image = cv2.warpPerspective(color_warp, inverse_matrix, self.image_size)
         return detected_lanes_image
 
+    @staticmethod
+    def visualiser(image, detected):
+        combined_image = cv2.addWeighted(image, 0.8, detected, 0.7, 0)
+        return combined_image
+
     def detect(self, image):
         thresholded, inverse_matrix = self.process_image(image)
         left_fit, right_fit = self.detect_lanes_sliding_window(thresholded)
