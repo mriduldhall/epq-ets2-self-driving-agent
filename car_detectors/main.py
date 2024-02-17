@@ -1,10 +1,10 @@
 from time import time, sleep
-from yolo.detection import Detection
+from yolo.detector import Detector
 from screenshot import Screenshot
 
 
 if __name__ == '__main__':
-    detector = Detection()
+    detector = Detector()
     screenshot = Screenshot()
     wait_time = 0
     while True:
