@@ -10,6 +10,8 @@ class Detector:
         self.window_margin = 10
         self.min_pixel_detection = 5
         self.image_size = (400, 225)
+        self.left_lane_colour = (255, 0, 255)
+        self.right_lane_colour = (0, 255, 255)
 
     def perspective_transform(self, image):
         source = np.float32([[40, 85], [300, 85], [0, 220], [400, 220]])
@@ -83,23 +85,21 @@ class Detector:
 
         return left_lane, right_lane
 
-    def draw_lane(self, image, thresholded, left_lane, right_lane, inverse_matrix):
-        new_image = np.copy(image)
-        if left_lane is None or right_lane is None:
-            return image
+    def draw_lane(self, thresholded, left_lane, right_lane, inverse_matrix):
         warp_zero = np.zeros_like(thresholded).astype(np.uint8)
         color_warp = np.dstack((warp_zero, warp_zero, warp_zero))
+        if left_lane is None or right_lane is None:
+            return cv2.warpPerspective(color_warp, inverse_matrix, self.image_size)
         h, w = thresholded.shape
         ploty = np.linspace(0, h - 1, num=h)
         left_fitx = left_lane[0] * ploty ** 2 + left_lane[1] * ploty + left_lane[2]
         right_fitx = right_lane[0] * ploty ** 2 + right_lane[1] * ploty + right_lane[2]
         pts_left = np.array([np.transpose(np.vstack([left_fitx, ploty]))])
         pts_right = np.array([np.flipud(np.transpose(np.vstack([right_fitx, ploty])))])
-        cv2.polylines(color_warp, np.int32([pts_left]), isClosed=False, color=(255, 0, 255), thickness=2)
-        cv2.polylines(color_warp, np.int32([pts_right]), isClosed=False, color=(0, 255, 255), thickness=2)
-        new_warp = cv2.warpPerspective(color_warp, inverse_matrix, self.image_size)
-        result = cv2.addWeighted(new_image, 0.8, new_warp, 0.5, 0)
-        return result
+        cv2.polylines(color_warp, np.int32([pts_left]), isClosed=False, color=self.left_lane_colour, thickness=1)
+        cv2.polylines(color_warp, np.int32([pts_right]), isClosed=False, color=self.right_lane_colour, thickness=1)
+        detected_lanes_image = cv2.warpPerspective(color_warp, inverse_matrix, self.image_size)
+        return detected_lanes_image
 
     def detect(self):
         images = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -109,7 +109,7 @@ class Detector:
             image = cv2.imread('../Test-Data/Lane Detection/field_of_view_' + image + '.png')
             thresholded, inverse_matrix = self.process_image(image)
             left_fit, right_fit = self.detect_lanes_sliding_window(thresholded)
-            detected = self.draw_lane(image, thresholded, left_fit, right_fit, inverse_matrix)
+            detected = self.draw_lane(thresholded, left_fit, right_fit, inverse_matrix)
             if counter == 0:
                 numpy_horizontal_concat = detected
             else:
