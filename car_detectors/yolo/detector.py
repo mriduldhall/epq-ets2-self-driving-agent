@@ -21,6 +21,14 @@ class Detector:
         ln = self.net.getLayerNames()
         self.ln = [ln[i - 1] for i in self.net.getUnconnectedOutLayers()]
 
+    def visualiser(self, image, detections):
+        for detection in detections:
+            x, y, w, h = detection[0]
+            distance = float(detection[1])
+            cv2.rectangle(image, (x, y), (x + w, y + h), self.colour, 2)
+            cv2.putText(image, f"{distance:.2f}m", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.colour, 2)
+        return image
+
     def detect(self, input_image):
         input_height, input_weight = input_image.shape[:2]
         blob = cv2.dnn.blobFromImage(input_image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
