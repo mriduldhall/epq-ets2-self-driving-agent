@@ -5,7 +5,7 @@ import numpy as np
 class Detector:
     def __init__(self):
         self.warp_size = [150, 300]
-        self.binary_threshold = (220, 255)
+        self.binary_threshold = (180, 255)
         self.number_of_windows = 50
         self.window_margin = 10
         self.min_pixel_detection = 5
