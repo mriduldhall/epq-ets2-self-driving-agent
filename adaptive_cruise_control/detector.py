@@ -13,7 +13,9 @@ class Detector:
         applicable_vehicles = []
         closest_vehicle = []
         for vehicle in detected_vehicles:
-            y_position = vehicle[0][1] + vehicle[0][3] - 1
+            y_position = vehicle[0][1] + vehicle[0][3]
+            if y_position >= len(detected_lane_image):
+                y_position = len(detected_lane_image) - 1
             x_position = vehicle[0][0] + (vehicle[0][2] / 2)
             column = detected_lane_image[y_position]
             left_lane = None
