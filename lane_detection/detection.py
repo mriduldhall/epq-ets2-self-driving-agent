@@ -77,11 +77,20 @@ class Detector:
         rightx = nonzerox[right_lane_inds]
         righty = nonzeroy[right_lane_inds]
 
-        left_lane, right_lane = (None, None)
         if len(leftx) != 0:
-            left_lane = np.polyfit(lefty, leftx, 2)
+            try:
+                left_lane = np.polyfit(lefty, leftx, 2)
+            except np.linalg.LinAlgError:
+                left_lane = np.array([-2.25659854e-05, -2.31880847e-01, 1.02564978e+02])
+        else:
+            left_lane = np.array([-2.25659854e-05, -2.31880847e-01, 1.02564978e+02])
         if len(rightx) != 0:
-            right_lane = np.polyfit(righty, rightx, 2)
+            try:
+                right_lane = np.polyfit(righty, rightx, 2)
+            except np.linalg.LinAlgError:
+                right_lane = np.array([2.86611080e-05, -1.00396661e-02, 1.16332107e+02])
+        else:
+            right_lane = np.array([2.86611080e-05, -1.00396661e-02, 1.16332107e+02])
 
         return left_lane, right_lane
 
