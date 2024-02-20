@@ -63,24 +63,28 @@ class Detector:
         self.second_previous_vehicle_distance = self.previous_vehicle_distance
         self.previous_vehicle_distance = distance
 
+    def use_regular_cruise_control(self, speed, speed_limit):
+        difference = speed - speed_limit
+        if self.previous_vehicle_distance is not None and self.previous_vehicle_distance < self.minimum_distance:
+            return "4"
+        elif speed <= speed_limit:
+            return "A"
+        elif difference > 10:
+            return "4"
+        elif difference > 6:
+            return "3"
+        elif difference > 3:
+            return "2"
+        elif difference >= 2:
+            return "1"
+        return "N"
+
     def engage(self, command):
         while True:
             start_time = time()
             speed_limit = self.speed_detector.detect_speed_limit()
             speed = self.speed_detector.detect_speed_opencv()
-            difference = speed - speed_limit
-            if speed <= speed_limit:
-                command.set_command("A")
-            elif difference > 10:
-                command.set_command("4")
-            elif difference > 6:
-                command.set_command("3")
-            elif difference > 3:
-                command.set_command("2")
-            elif difference >= 2:
-                command.set_command("1")
-            else:
-                command.set_command("N")
+            command.set(self.use_regular_cruise_control(speed, speed_limit))
             end_time = time()
             wait_time = 1 - (end_time - start_time)
             if wait_time > 0:
