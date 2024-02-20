@@ -79,13 +79,32 @@ class Detector:
             return "1"
         return "N"
 
+    def use_adaptive_cruise_control(self, relative_speed):
+        if self.previous_vehicle_distance < self.minimum_distance:
+            return "E"
+        elif self.previous_vehicle_distance < 50 and 30 > relative_speed > 2.5:
+            return "E"
+        elif self.previous_vehicle_distance < 75 and 30 > relative_speed > 5:
+            return "4"
+        return "N"
+
     def engage(self, command):
         while True:
             start_time = time()
-            speed_limit = self.speed_detector.detect_speed_limit()
-            speed = self.speed_detector.detect_speed_opencv()
-            command.set(self.use_regular_cruise_control(speed, speed_limit))
+            field_of_view = self.screenshot.take_field_of_view_screenshot()
+            detected_vehicles = self.vehicle_detector.detect(field_of_view)
+            detected_lane_image = self.lane_detector.detect(field_of_view)
+            applicable_vehicle = self.find_applicable_vehicle(detected_vehicles, detected_lane_image)
+            relative_speed = self.calculate_relative_speed(applicable_vehicle)
+            self.update_previous_distances(applicable_vehicle)
+            if relative_speed is None or relative_speed < 0:
+                speed_limit = self.speed_detector.detect_speed_limit()
+                speed = self.speed_detector.detect_speed_opencv()
+                command.set_command(self.use_regular_cruise_control(speed, speed_limit))
+            else:
+                command.set_command(self.use_adaptive_cruise_control(relative_speed))
             end_time = time()
-            wait_time = 1 - (end_time - start_time)
+            time_taken = end_time - start_time
+            wait_time = 1 - time_taken
             if wait_time > 0:
                 sleep(wait_time)
